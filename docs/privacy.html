@@ -1,0 +1,111 @@
+<title>Focus Gate Privacy</title>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --border: #e3e1da;
+    --text: #232220;
+    --text-dim: #6b6862;
+    --accent: #3d8b5f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #16171b;
+      --surface: #1c1d22;
+      --border: #2c2d33;
+      --text: #f0efec;
+      --text-dim: #9a9791;
+      --accent: #5cb583;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #16171b;
+    --surface: #1c1d22;
+    --border: #2c2d33;
+    --text: #f0efec;
+    --text-dim: #9a9791;
+    --accent: #5cb583;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    padding-block: 48px;
+  }
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding-inline: 16px;
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .updated { color: var(--text-dim); font-size: 13px; margin-bottom: 36px; }
+  h2 { font-size: 16px; margin: 32px 0 10px; }
+  p, li { font-size: 15px; line-height: 1.65; color: var(--text); }
+  ul { padding-left: 20px; margin: 10px 0; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin: 20px 0;
+  }
+  .card p { margin: 0; color: var(--text-dim); font-size: 14px; }
+  code {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 13px;
+  }
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">Privacy Policy</div>
+  <h1>Focus Gate</h1>
+  <div class="updated">Last updated September 21, 2026</div>
+
+  <div class="card">
+    <p>Short version: Focus Gate collects nothing, sends nothing anywhere, and has no server. Everything it stores stays on your own device, in your own browser.</p>
+  </div>
+
+  <h2>What the extension does</h2>
+  <p>Focus Gate is a personal productivity tool. Before a page loads on a site you've configured (by default: Instagram, Reddit, YouTube), it asks "is this for work?". If you say no, the page doesn't load. If you say yes, it's unlocked for a grace period you set, then asks again.</p>
+
+  <h2>What data it stores</h2>
+  <ul>
+    <li>Your configured site list, prompt text and grace period — stored via <code>chrome.storage.local</code>.</li>
+    <li>Per-tab "currently unlocked" state — stored via <code>chrome.storage.session</code>, cleared automatically when the browser closes.</li>
+    <li>Usage insights: minutes spent on gated pages per day, and counts of how many times you answered yes/no — stored via <code>chrome.storage.local</code> so the built-in Insights page can show you a summary.</li>
+  </ul>
+  <p>All of the above lives only in your local Chrome profile. It is never transmitted anywhere — there is no backend server, no analytics SDK, and no network request made by this extension at all.</p>
+
+  <h2>What data it does not collect</h2>
+  <ul>
+    <li>No browsing history beyond the gated sites you configure.</li>
+    <li>No page content, form data, keystrokes, or personal information.</li>
+    <li>No account, sign-in, or identifying information of any kind.</li>
+    <li>Nothing is sold, shared, or sent to any third party — there is no third party involved.</li>
+  </ul>
+
+  <h2>Permissions</h2>
+  <ul>
+    <li><code>tabs</code> / <code>webNavigation</code> — to detect when you navigate to a configured site and redirect the tab to the confirmation prompt before the page loads.</li>
+    <li><code>storage</code> — to save your settings and usage stats locally.</li>
+    <li><code>alarms</code> — to re-lock a page after your grace period elapses.</li>
+    <li><code>idle</code> — to avoid logging usage time while your computer is idle.</li>
+  </ul>
+
+  <h2>Uninstalling</h2>
+  <p>Removing the extension (<code>chrome://extensions</code> → Remove) deletes all of its stored data along with it.</p>
+
+  <h2>Contact</h2>
+  <p>This is a personal, single-developer extension. Questions can be sent to the developer account associated with this listing.</p>
+</div>

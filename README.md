@@ -1,5 +1,10 @@
 # Focus Gate
 
+[![CI](https://github.com/tinykite-co/focus-gate/actions/workflows/ci.yml/badge.svg)](https://github.com/tinykite-co/focus-gate/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
+**[Landing page & privacy policy →](https://tinykite-co.github.io/focus-gate/)**
+
 A personal Chrome extension that gates distracting sites behind a
 deterrent-question gauntlet, with three levels per site.
 

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Focus Gate</title>
+<meta name="description" content="A Chrome extension that gates distracting sites behind a deterrent-question gauntlet grounded in your real usage stats." />
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #14151a;
+    color: #f2f2f2;
+    margin: 0;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 56px 20px 80px; }
+  header { margin-bottom: 40px; }
+  h1 { font-size: 34px; margin: 0 0 10px; }
+  .tagline { font-size: 18px; opacity: 0.7; margin: 0; }
+  h2 { font-size: 20px; margin: 40px 0 12px; }
+  p { opacity: 0.9; }
+  ul { padding-left: 20px; }
+  li { margin-bottom: 8px; }
+  code { background: #24252c; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  .badges { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0 0; }
+  .badge {
+    display: inline-block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #24352c;
+    color: #7fd6a4;
+  }
+  a { color: #7fb2ff; }
+  .links { margin-top: 40px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .links a {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: #24252c;
+    text-decoration: none;
+    color: #f2f2f2;
+    font-weight: 600;
+  }
+  .links a:hover { background: #2d2e37; }
+  footer { margin-top: 60px; opacity: 0.5; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Focus Gate</h1>
+    <p class="tagline">A personal Chrome extension that makes it harder to fall into Instagram, Reddit, YouTube — or any site you add — on autopilot.</p>
+    <div class="badges"><span class="badge">Manifest V3</span><span class="badge">No analytics</span><span class="badge">No network calls</span></div>
+  </header>
+
+  <h2>What it does</h2>
+  <p>Every site you gate starts as <strong>Not for work</strong>. Opening it runs a gauntlet of deterrent
+  questions &mdash; each one grounded in a real fact, either your actual usage today (times opened, minutes
+  spent) or a general fact about why these feeds are built to pull at you. Answer <strong>no</strong> to any
+  single question and the tab is blocked. Get through the whole run and it unlocks for a short grace period,
+  then locks again.</p>
+
+  <h2>Three states per site</h2>
+  <ul>
+    <li><strong>I use this for work</strong> &mdash; a shorter, lighter gauntlet.</li>
+    <li><strong>Not for work</strong> (the default) &mdash; a longer override gauntlet, or a flat block, your choice.</li>
+    <li><strong>Block permanently</strong> &mdash; no prompt, ever, no override.</li>
+  </ul>
+
+  <h2>Also included</h2>
+  <ul>
+    <li>Usage insights: time spent per site, yes/no decision counts, daily trend.</li>
+    <li>A large, editable pool of deterrent questions, plus a copyable AI prompt to generate a personalized set.</li>
+    <li>Fully configurable sites, timers, and gauntlet length from the settings page.</li>
+  </ul>
+
+  <h2>Privacy</h2>
+  <p>Focus Gate reads no page content, sends nothing to any server, and has no analytics. Everything is
+  stored locally in your browser. See the <a href="./privacy.html">privacy policy</a> for details.</p>
+
+  <div class="links">
+    <a href="https://github.com/tinykite-co/focus-gate">Source on GitHub</a>
+    <a href="./privacy.html">Privacy Policy</a>
+  </div>
+
+  <footer>Focus Gate is an independent, personal project &mdash; not affiliated with Instagram, Reddit, YouTube, or Google.</footer>
+</div>
+</body>
+</html>
