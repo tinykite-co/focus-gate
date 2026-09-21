@@ -36,7 +36,7 @@ function gateUrlFor(tabId, targetUrl, kind) {
     "&target=" +
     encodeURIComponent(targetUrl) +
     "&kind=" +
-    encodeURIComponent(kind || "work")
+    encodeURIComponent(kind || "override")
   );
 }
 
@@ -89,6 +89,25 @@ async function checkAndGate(tabId, url) {
     return;
   }
 
+  if (site.mode === "work") {
+    // Marked as work: never gated up front, no questions asked. It just
+    // opens. A silent timer starts (or restarts, on any new URL on this
+    // site) for graceMinutes; if the SAME url is still open when it fires,
+    // the alarm handler below sends a single "are you still using this for
+    // work?" check-in (kind "work-check") instead of re-asking anything.
+    // Saying yes there re-arms this same timer.
+    const graceMs = (currentSettings.graceMinutes || 5) * 60 * 1000;
+    await setAllowEntry(tabId, url, Date.now() + graceMs, "work-check");
+    try {
+      await chrome.alarms.create(`recheck_${tabId}`, {
+        delayInMinutes: currentSettings.graceMinutes || 5
+      });
+    } catch (e) {
+      // ignore
+    }
+    return; // no redirect — the page just loads
+  }
+
   const entry = await getAllowEntry(tabId);
   const now = Date.now();
 
@@ -96,14 +115,11 @@ async function checkAndGate(tabId, url) {
     return; // still within the approved window for this exact URL
   }
 
-  // "work" sites get the varied deterrent gauntlet; everything else
-  // ("default" — not marked as work, with notForWorkBehavior "override")
-  // gets the longer, varied override gauntlet.
-  const kind = site.mode === "work" ? "work" : "override";
-
+  // Not marked as work ("default", with notForWorkBehavior "override") gets
+  // the longer, varied override gauntlet before it opens at all.
   await clearAllowEntry(tabId);
   try {
-    await chrome.tabs.update(tabId, { url: gateUrlFor(tabId, url, kind) });
+    await chrome.tabs.update(tabId, { url: gateUrlFor(tabId, url, "override") });
   } catch (e) {
     // tab may have gone away mid-navigation; nothing to do
   }
@@ -237,7 +253,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === "approve") {
     const tabId = msg.tabId;
     const url = msg.url;
-    const kind = msg.kind === "override" ? "override" : "work";
+    const kind = msg.kind === "work-check" ? "work-check" : "override";
     fgRecordDecision("yes");
     (currentSettings ? Promise.resolve(currentSettings) : fgGetSettings()).then(
       (settings) => {
