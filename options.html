@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Focus Gate — Settings</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+    background: #14151a;
+    color: #f2f2f2;
+  }
+  h1 { font-size: 20px; margin-bottom: 4px; }
+  .sub { opacity: 0.55; font-size: 13px; margin-bottom: 28px; }
+  section { margin-bottom: 30px; }
+  h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.6; margin: 0 0 12px; }
+  label { display: block; font-size: 13px; margin-bottom: 6px; opacity: 0.8; }
+  input[type="text"], input[type="number"], textarea {
+    width: 100%;
+    box-sizing: border-box;
+    background: #1c1d24;
+    border: 1px solid #2c2d36;
+    border-radius: 8px;
+    color: #f2f2f2;
+    padding: 9px 11px;
+    font-size: 14px;
+    margin-bottom: 14px;
+    font-family: inherit;
+  }
+  textarea { resize: vertical; min-height: 50px; }
+  .site-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #1c1d24;
+    border: 1px solid #2c2d36;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+  .site-row .name { font-weight: 600; font-size: 14px; }
+  .site-row .domains { font-size: 12px; opacity: 0.55; margin-top: 2px; }
+  .site-row button {
+    background: none;
+    border: none;
+    color: #d65454;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+  .add-row { display: flex; gap: 8px; margin-top: 12px; }
+  .add-row input { margin-bottom: 0; flex: 1; }
+  .add-row button {
+    background: #3d8b5f;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .add-row button:hover { background: #45a06b; }
+  .minutes-row { display: flex; align-items: center; gap: 10px; }
+  .minutes-row input { width: 80px; margin-bottom: 0; }
+  #save {
+    background: #3d8b5f;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    padding: 11px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  #save:hover { background: #45a06b; }
+  #status {
+    font-size: 13px;
+    margin-left: 12px;
+    opacity: 0.7;
+  }
+  .hint { font-size: 12px; opacity: 0.45; margin-top: -8px; margin-bottom: 14px; }
+  select {
+    background: #1c1d24;
+    border: 1px solid #2c2d36;
+    color: #f2f2f2;
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+  .site-row .name-wrap { display: flex; align-items: center; gap: 8px; }
+  .badge {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: #3a2a2a;
+    color: #e08a8a;
+  }
+  #promptMessages {
+    min-height: 200px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .ai-box {
+    background: #1c1d24;
+    border: 1px solid #2c2d36;
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .ai-box p { font-size: 13px; opacity: 0.75; line-height: 1.5; margin: 0 0 10px; }
+  .ai-prompt {
+    background: #101116;
+    border: 1px solid #2c2d36;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    max-height: 180px;
+    overflow-y: auto;
+  }
+  .ai-box button {
+    background: #2a2b32;
+    border: none;
+    color: #f2f2f2;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .ai-box button:hover { background: #35363f; }
+  .row-buttons { display: flex; gap: 8px; margin-top: 10px; }
+  .row-buttons button {
+    background: #2a2b32;
+    border: none;
+    color: #f2f2f2;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .row-buttons button:hover { background: #35363f; }
+</style>
+</head>
+<body>
+  <h1>Focus Gate settings</h1>
+  <div class="sub">Changes apply immediately, no need to reload the extension.</div>
+
+  <section>
+    <h2>Gated sites</h2>
+    <p style="font-size:13px; opacity:0.7; margin: 0 0 10px;">Every site starts as <b>Not for work</b> — locked by default. Mark a site as <b>I use this for work</b> to get the lighter, varied gauntlet instead of the repetitive override. <b>Block permanently</b> skips prompts entirely, no override possible.</p>
+    <div id="siteList"></div>
+    <div class="add-row">
+      <input type="text" id="newSiteName" placeholder="Name (e.g. TikTok)" style="flex: 0 0 25%;" />
+      <input type="text" id="newSiteDomain" placeholder="Domain(s), comma separated (e.g. tiktok.com)" />
+      <select id="newSiteMode">
+        <option value="default" selected>Not for work (default)</option>
+        <option value="work">I use this for work</option>
+        <option value="blocked">Block permanently</option>
+      </select>
+      <button id="addSite">Add</button>
+    </div>
+    <div class="hint">Enter just the domain — e.g. "twitter.com" also matches www.twitter.com and mobile.twitter.com.</div>
+  </section>
+
+  <section>
+    <h2>Work-mode messages</h2>
+    <p style="font-size:13px; opacity:0.7; margin: 0 0 10px;">Used for sites marked "I use this for work". One per line — a random subset is shown each gauntlet, so it stays a genuine "do I really want this?" moment instead of something you learn to click past.</p>
+    <textarea id="promptMessages"></textarea>
+    <div class="row-buttons">
+      <button id="restoreDefaults">Restore default messages</button>
+    </div>
+    <label for="promptHint" style="margin-top:16px;">Helper text below the question (use {minutes} for the grace period, {count} for how many questions)</label>
+    <textarea id="promptHint" style="min-height: 50px;"></textarea>
+  </section>
+
+  <section>
+    <h2>Not-for-work sites</h2>
+    <p style="font-size:13px; opacity:0.7; margin: 0 0 10px;">What happens when you open a site you haven't marked as work.</p>
+    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+      <label style="display:flex; align-items:flex-start; gap:8px; font-size:13px; opacity:0.9;">
+        <input type="radio" name="notForWorkBehavior" id="behaviorOverride" value="override" style="margin-top:3px;" />
+        <span><b>Ask a longer run of questions</b> — same varied pool as work mode, just more of them (below). Get through all of them and it unlocks.</span>
+      </label>
+      <label style="display:flex; align-items:flex-start; gap:8px; font-size:13px; opacity:0.9;">
+        <input type="radio" name="notForWorkBehavior" id="behaviorBlock" value="block" style="margin-top:3px;" />
+        <span><b>Just block it outright</b> — no questions, no override, every time. Only marking the site as work, or setting it to "Block permanently" some other way, changes that.</span>
+      </label>
+    </div>
+    <label for="overrideHint">Helper text below the question (use {minutes} and {count})</label>
+    <textarea id="overrideHint" style="min-height: 50px;"></textarea>
+  </section>
+
+  <section>
+    <h2>Personalize with AI</h2>
+    <div class="ai-box">
+      <p>Paste this into Claude or ChatGPT, fill in your own details, and paste what it gives you into the box above (one message per line).</p>
+      <div class="ai-prompt" id="aiPrompt"></div>
+      <button id="copyPrompt">Copy prompt</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Question gauntlet</h2>
+    <div class="minutes-row">
+      <label style="margin-bottom:0;">Work-mode sites:</label>
+      <input type="number" id="minQuestions" min="1" max="50" style="width:60px;" />
+      <span style="opacity:0.6; font-size: 13px;">to</span>
+      <input type="number" id="maxQuestions" min="1" max="50" style="width:60px;" />
+      <span style="opacity:0.6; font-size: 13px;">varied questions.</span>
+    </div>
+    <div class="minutes-row" style="margin-top:10px;">
+      <label style="margin-bottom:0;">Not-for-work override:</label>
+      <input type="number" id="overrideMinQuestions" min="1" max="50" style="width:60px;" />
+      <span style="opacity:0.6; font-size: 13px;">to</span>
+      <input type="number" id="overrideMaxQuestions" min="1" max="50" style="width:60px;" />
+      <span style="opacity:0.6; font-size: 13px;">repeats of the same question.</span>
+    </div>
+    <div class="hint">A random count in each range is picked every time. Answering "no" to any single question blocks immediately. Only getting through all of them unlocks the page for the grace period below.</div>
+  </section>
+
+  <section>
+    <h2>Timing</h2>
+    <div class="minutes-row">
+      <label for="graceMinutes" style="margin-bottom:0;">Grace period</label>
+      <input type="number" id="graceMinutes" min="1" max="180" />
+      <span style="opacity:0.6; font-size: 13px;">minutes on the same URL before it re-locks</span>
+    </div>
+    <div class="hint">Any change of URL (a new video, post, page, etc.) always re-asks immediately (a fresh gauntlet), regardless of this timer.</div>
+  </section>
+
+  <button id="save">Save settings</button>
+  <span id="status"></span>
+
+  <script src="settings.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

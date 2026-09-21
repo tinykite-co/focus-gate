@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Focus Gate",
+  "version": "1.8.1",
+  "description": "Runs a gauntlet of deterrent questions before non-work sites load. Mark sites as work for a lighter gauntlet. Fully configurable.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": ["tabs", "webNavigation", "storage", "alarms", "idle"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_page": "options.html",
+  "web_accessible_resources": [
+    {
+      "resources": ["gate.html", "blocked.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
