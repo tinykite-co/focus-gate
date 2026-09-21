@@ -18,15 +18,19 @@ deterrent-question gauntlet, with three levels per site.
 Every site you add starts as **Not for work** — nothing is assumed to be
 work by default. Change a site's state any time in Settings:
 
-1. **I use this for work** — the light gauntlet: a random run of
-   `minQuestions`–`maxQuestions` (default 5–10) *varied* deterrent
-   questions, each drawn from a ~350-line pool so it rarely repeats.
-2. **Not for work** (the default for every site) — a longer override
-   gauntlet of `overrideMinQuestions`–`overrideMaxQuestions` (default 7–10)
-   *varied* questions from that same pool — not a hard block: get through
-   every single one and it unlocks for the grace period, same as work mode;
-   then it locks back to this state. You can instead set this to a flat
-   block (Settings → "Not-for-work sites") with no override at all.
+1. **I use this for work** — no questions at all. It just opens. A
+   silent timer starts for `graceMinutes` (default 5); if the *same* URL is
+   still open when it fires, you get one single, real check-in — "Are you
+   still using this for work?" — not a gauntlet. Say yes and the timer
+   re-arms; say no and it's blocked. A new URL on the site just restarts
+   the timer silently.
+2. **Not for work** (the default for every site) — the override gauntlet:
+   `overrideMinQuestions`–`overrideMaxQuestions` (default 7–10) *varied*
+   deterrent questions, each drawn from a ~350-line pool so it rarely
+   repeats. Not a hard block: get through every single one and it unlocks
+   for the grace period, then locks back to this state. You can instead set
+   this to a flat block (Settings → "Not-for-work sites") with no override
+   at all.
 3. **Block permanently** — no prompt at all, ever, no override possible.
    For sites you never want a way in for.
 
@@ -72,7 +76,7 @@ These facts rotate question to question within one gauntlet, so it's never
 the same fact twice in a row.
 
 <p align="center">
-  <img src="docs/screenshots/screenshot-gate-work.png" width="60%" alt="Gate screen for a site marked as work" />
+  <img src="docs/screenshots/screenshot-gate-work.png" width="60%" alt="Work check-in screen, shown only after the grace period" />
 </p>
 
 ## Insights

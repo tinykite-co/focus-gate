@@ -2,7 +2,11 @@
   const params = new URLSearchParams(location.search);
   const tabIdParam = params.get("tabId");
   const targetUrl = params.get("target");
-  const kind = params.get("kind") === "override" ? "override" : "work";
+  const kindParam = params.get("kind");
+  // "override" — not marked as work, full varied gauntlet before it opens.
+  // "work-check" — marked as work, already open for graceMinutes; a single
+  // "are you still using this for work?" question, not a gauntlet.
+  const kind = kindParam === "work-check" ? "work-check" : "override";
 
   const siteEl = document.getElementById("site");
   const urlEl = document.getElementById("url");
@@ -23,6 +27,7 @@
   // buttons always answer this one fixed, always-sensible question instead,
   // shown right above them every time.
   function closerTextFor(siteName) {
+    if (kind === "work-check") return `Still using ${siteName} for work?`;
     return `Still want to open ${siteName}?`;
   }
 
@@ -70,13 +75,14 @@
       progressFillEl.style.width = "100%";
     }
     const minutes = settings.graceMinutes || 5;
-    const hintTemplate =
-      kind === "override"
-        ? settings.overrideHint ||
-          "Not marked as work, so it's locked by default. Saying yes {count} times in a row unlocks it for {minutes} minutes."
-        : settings.promptHint ||
-          "Getting through all {count} unlocks this page for {minutes} minutes.";
-    hintEl.textContent = hintTemplate.replace(/\{minutes\}/g, minutes).replace(/\{count\}/g, total);
+    if (kind === "work-check") {
+      hintEl.textContent = `Marked as work, so it opened without questions. Saying yes keeps it open, with another check-in like this in ${minutes} minute${minutes === 1 ? "" : "s"}.`;
+    } else {
+      const hintTemplate =
+        settings.overrideHint ||
+        "Not marked as work, so it's locked by default. Getting through all {count} unlocks it for {minutes} minutes.";
+      hintEl.textContent = hintTemplate.replace(/\{minutes\}/g, minutes).replace(/\{count\}/g, total);
+    }
   }
 
   function finish() {
@@ -110,18 +116,31 @@
     const site = fgSiteForUrl(settings, targetUrl || "");
     siteName = site.name;
     siteEl.textContent = site.name;
-    kindBadgeEl.textContent = kind === "override" ? "Not marked for work" : "Work";
-    kindBadgeEl.className = "kind-badge " + kind;
-    yesBtn.textContent = kind === "override" ? "yes, continue anyway" : "yes, this is for work";
 
-    // Real numbers for today, on this exact site — used to ground every
-    // question in an actual fact instead of a generic guilt-trip.
-    const minutesBefore = await fgGetSiteMinutesToday(site.id);
-    const opens = await fgRecordSiteOpen(site.id, site.name);
-    const factData = { site: site.name, opens, minutes: minutesBefore };
+    if (kind === "work-check") {
+      // A single, real check-in — not a gauntlet. Shown only after this
+      // site has already been open (as work) for the grace period.
+      kindBadgeEl.textContent = "Work check-in";
+      kindBadgeEl.className = "kind-badge work";
+      yesBtn.textContent = "yes, still working";
+      const minutes = await fgGetSiteMinutesToday(site.id);
+      const fact =
+        minutes > 0
+          ? `You've had ${site.name} open as work for ${minutes} minute${minutes === 1 ? "" : "s"} today.`
+          : `${site.name} has been open, marked as work, for the last ${settings.graceMinutes || 5} minutes.`;
+      questions = [{ fact, question: `Are you still using ${site.name} for work?` }];
+    } else {
+      kindBadgeEl.textContent = "Not marked for work";
+      kindBadgeEl.className = "kind-badge override";
+      yesBtn.textContent = "yes, continue anyway";
+      // Real numbers for today, on this exact site — used to ground every
+      // question in an actual fact instead of a generic guilt-trip.
+      const minutesBefore = await fgGetSiteMinutesToday(site.id);
+      const opens = await fgRecordSiteOpen(site.id, site.name);
+      const factData = { site: site.name, opens, minutes: minutesBefore };
+      questions = fgPickOverrideRun(settings, factData);
+    }
 
-    questions =
-      kind === "override" ? fgPickOverrideRun(settings, factData) : fgPickQuestionRun(settings, factData);
     index = 0;
     renderStep();
   });

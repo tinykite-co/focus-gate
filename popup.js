@@ -10,8 +10,8 @@ fgGetSettings().then((settings) => {
   const blockedCount = settings.sites.filter((s) => s.mode === "blocked").length;
   let desc =
     settings.notForWorkBehavior === "block"
-      ? `Work sites ask ${settings.minQuestions}-${settings.maxQuestions} varied questions to unlock for ${settings.graceMinutes} min. Everything else is just blocked outright, no override.`
-      : `Work sites ask ${settings.minQuestions}-${settings.maxQuestions} varied questions; everything else asks ${settings.overrideMinQuestions}-${settings.overrideMaxQuestions}. Getting through unlocks for ${settings.graceMinutes} min.`;
+      ? `Work sites open immediately, with a quick check-in every ${settings.graceMinutes} min. Everything else is just blocked outright, no override.`
+      : `Work sites open immediately, with a quick check-in every ${settings.graceMinutes} min. Everything else asks ${settings.overrideMinQuestions}-${settings.overrideMaxQuestions} varied questions to unlock for ${settings.graceMinutes} min.`;
   if (workCount === 0) {
     desc += ` Nothing is marked as work yet.`;
   }

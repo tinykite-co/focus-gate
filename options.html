@@ -156,7 +156,7 @@
 
   <section>
     <h2>Gated sites</h2>
-    <p style="font-size:13px; opacity:0.7; margin: 0 0 10px;">Every site starts as <b>Not for work</b> — locked by default. Mark a site as <b>I use this for work</b> to get the lighter, shorter gauntlet instead of the longer override. <b>Block permanently</b> skips prompts entirely, no override possible.</p>
+    <p style="font-size:13px; opacity:0.7; margin: 0 0 10px;">Every site starts as <b>Not for work</b> — locked by default, behind the override gauntlet below. Mark a site as <b>I use this for work</b> to skip questions entirely — it just opens, with a single "are you still using this for work?" check-in every grace period (below) instead of any gauntlet. <b>Block permanently</b> skips prompts entirely too, but the other way — no override possible.</p>
     <div id="siteList"></div>
     <div class="add-row">
       <input type="text" id="newSiteName" placeholder="Name (e.g. TikTok)" style="flex: 0 0 25%;" />
@@ -172,14 +172,12 @@
   </section>
 
   <section>
-    <h2>Work-mode messages</h2>
-    <p style="font-size:13px; opacity:0.7; margin: 0 0 10px;">Used for sites marked "I use this for work". One per line — a random subset is shown each gauntlet, so it stays a genuine "do I really want this?" moment instead of something you learn to click past.</p>
+    <h2>Deterrent questions</h2>
+    <p style="font-size:13px; opacity:0.7; margin: 0 0 10px;">Used for the not-for-work override gauntlet below (sites marked "I use this for work" skip questions entirely — see Gated sites above). One per line — a random subset is shown each gauntlet, so it stays a genuine "do I really want this?" moment instead of something you learn to click past.</p>
     <textarea id="promptMessages"></textarea>
     <div class="row-buttons">
       <button id="restoreDefaults">Restore default messages</button>
     </div>
-    <label for="promptHint" style="margin-top:16px;">Helper text below the question (use {minutes} for the grace period, {count} for how many questions)</label>
-    <textarea id="promptHint" style="min-height: 50px;"></textarea>
   </section>
 
   <section>
@@ -188,7 +186,7 @@
     <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
       <label style="display:flex; align-items:flex-start; gap:8px; font-size:13px; opacity:0.9;">
         <input type="radio" name="notForWorkBehavior" id="behaviorOverride" value="override" style="margin-top:3px;" />
-        <span><b>Ask a longer run of questions</b> — same varied pool as work mode, just more of them (below). Get through all of them and it unlocks.</span>
+        <span><b>Ask a longer run of questions</b> — the varied pool below. Get through all of them and it unlocks.</span>
       </label>
       <label style="display:flex; align-items:flex-start; gap:8px; font-size:13px; opacity:0.9;">
         <input type="radio" name="notForWorkBehavior" id="behaviorBlock" value="block" style="margin-top:3px;" />
@@ -211,20 +209,13 @@
   <section>
     <h2>Question gauntlet</h2>
     <div class="minutes-row">
-      <label style="margin-bottom:0;">Work-mode sites:</label>
-      <input type="number" id="minQuestions" min="1" max="50" style="width:60px;" />
-      <span style="opacity:0.6; font-size: 13px;">to</span>
-      <input type="number" id="maxQuestions" min="1" max="50" style="width:60px;" />
-      <span style="opacity:0.6; font-size: 13px;">varied questions.</span>
-    </div>
-    <div class="minutes-row" style="margin-top:10px;">
       <label style="margin-bottom:0;">Not-for-work override:</label>
       <input type="number" id="overrideMinQuestions" min="1" max="50" style="width:60px;" />
       <span style="opacity:0.6; font-size: 13px;">to</span>
       <input type="number" id="overrideMaxQuestions" min="1" max="50" style="width:60px;" />
-      <span style="opacity:0.6; font-size: 13px;">varied questions (a longer run than work mode).</span>
+      <span style="opacity:0.6; font-size: 13px;">varied questions.</span>
     </div>
-    <div class="hint">A random count in each range is picked every time. Answering "no" to any single question blocks immediately. Only getting through all of them unlocks the page for the grace period below.</div>
+    <div class="hint">A random count in this range is picked every time. Answering "no" to any single question blocks immediately. Only getting through all of them unlocks the page for the grace period below. Sites marked "I use this for work" never see this — see Timing below for how those work instead.</div>
   </section>
 
   <section>
@@ -232,9 +223,9 @@
     <div class="minutes-row">
       <label for="graceMinutes" style="margin-bottom:0;">Grace period</label>
       <input type="number" id="graceMinutes" min="1" max="180" />
-      <span style="opacity:0.6; font-size: 13px;">minutes on the same URL before it re-locks</span>
+      <span style="opacity:0.6; font-size: 13px;">minutes before it re-locks or re-checks</span>
     </div>
-    <div class="hint">Any change of URL (a new video, post, page, etc.) always re-asks immediately (a fresh gauntlet), regardless of this timer.</div>
+    <div class="hint">Not-for-work sites: any change of URL (a new video, post, page, etc.) always re-asks immediately, regardless of this timer — only staying on the exact same URL uses the grace period. Work sites: this is how long a site stays open before a single "are you still using this for work?" check-in — no gauntlet, and a new URL just restarts this same timer silently.</div>
   </section>
 
   <button id="save">Save settings</button>

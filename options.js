@@ -8,13 +8,10 @@
   const addSiteBtn = document.getElementById("addSite");
   const promptMessagesEl = document.getElementById("promptMessages");
   const restoreDefaultsBtn = document.getElementById("restoreDefaults");
-  const promptHintEl = document.getElementById("promptHint");
   const behaviorOverrideEl = document.getElementById("behaviorOverride");
   const behaviorBlockEl = document.getElementById("behaviorBlock");
   const overrideHintEl = document.getElementById("overrideHint");
   const graceMinutesEl = document.getElementById("graceMinutes");
-  const minQuestionsEl = document.getElementById("minQuestions");
-  const maxQuestionsEl = document.getElementById("maxQuestions");
   const overrideMinQuestionsEl = document.getElementById("overrideMinQuestions");
   const overrideMaxQuestionsEl = document.getElementById("overrideMaxQuestions");
   const saveBtn = document.getElementById("save");
@@ -133,12 +130,9 @@ Then generate as many personalized deterrent lines as you reasonably can (aim fo
   function loadIntoForm() {
     renderSites();
     promptMessagesEl.value = settings.promptMessages.join("\n");
-    promptHintEl.value = settings.promptHint;
     (settings.notForWorkBehavior === "block" ? behaviorBlockEl : behaviorOverrideEl).checked = true;
     overrideHintEl.value = settings.overrideHint;
     graceMinutesEl.value = settings.graceMinutes;
-    minQuestionsEl.value = settings.minQuestions;
-    maxQuestionsEl.value = settings.maxQuestions;
     overrideMinQuestionsEl.value = settings.overrideMinQuestions;
     overrideMaxQuestionsEl.value = settings.overrideMaxQuestions;
     aiPromptEl.textContent = AI_PROMPT_TEMPLATE;
@@ -197,18 +191,10 @@ Then generate as many personalized deterrent lines as you reasonably can (aim fo
       .map((l) => l.replace(/^[\s]*[-*•]\s*/, "").replace(/^[\s]*\d+[\.\)]\s*/, "").trim())
       .filter(Boolean);
     settings.promptMessages = lines.length ? lines : structuredClone(DEFAULT_SETTINGS.promptMessages);
-    settings.promptHint = promptHintEl.value.trim();
     settings.notForWorkBehavior = behaviorBlockEl.checked ? "block" : "override";
     settings.overrideHint = overrideHintEl.value.trim();
     const minutes = parseInt(graceMinutesEl.value, 10);
     settings.graceMinutes = Number.isFinite(minutes) && minutes > 0 ? minutes : 5;
-
-    let minQ = parseInt(minQuestionsEl.value, 10);
-    let maxQ = parseInt(maxQuestionsEl.value, 10);
-    if (!Number.isFinite(minQ) || minQ < 1) minQ = 5;
-    if (!Number.isFinite(maxQ) || maxQ < minQ) maxQ = minQ;
-    settings.minQuestions = minQ;
-    settings.maxQuestions = maxQ;
 
     let overMinQ = parseInt(overrideMinQuestionsEl.value, 10);
     let overMaxQ = parseInt(overrideMaxQuestionsEl.value, 10);
