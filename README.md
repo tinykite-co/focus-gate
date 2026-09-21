@@ -8,6 +8,11 @@
 A personal Chrome extension that gates distracting sites behind a
 deterrent-question gauntlet, with three levels per site.
 
+<p align="center">
+  <img src="docs/screenshots/screenshot-gate-override.png" width="46%" alt="Gate screen with a real usage fact and a deterrent question" />
+  <img src="docs/screenshots/screenshot-options.png" width="46%" alt="Settings page" />
+</p>
+
 ## The three site states
 
 Every site you add starts as **Not for work** — nothing is assumed to be
@@ -66,12 +71,21 @@ guilt-trip.** Each one is prefixed with either:
 These facts rotate question to question within one gauntlet, so it's never
 the same fact twice in a row.
 
+<p align="center">
+  <img src="docs/screenshots/screenshot-gate-work.png" width="60%" alt="Gate screen for a site marked as work" />
+</p>
+
 ## Insights
 
 While a gated page is unlocked and open, and you're actively at your
 computer (not idle), it logs a minute of usage against that site. Click the
 toolbar icon → **Insights** for a breakdown by site, a daily trend, and
 your yes/no ratio — today, last 7 days, or last 30 days.
+
+<p align="center">
+  <img src="docs/screenshots/screenshot-stats.png" width="60%" alt="Insights page showing time spent per site and a daily trend" />
+  <img src="docs/screenshots/screenshot-popup.png" width="30%" alt="Toolbar popup" />
+</p>
 
 ## Why this instead of the Chrome Web Store
 
