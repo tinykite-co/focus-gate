@@ -98,7 +98,7 @@ async function checkAndGate(tabId, url) {
 
   // "work" sites get the varied deterrent gauntlet; everything else
   // ("default" — not marked as work, with notForWorkBehavior "override")
-  // gets the longer, repetitive override gauntlet.
+  // gets the longer, varied override gauntlet.
   const kind = site.mode === "work" ? "work" : "override";
 
   await clearAllowEntry(tabId);
